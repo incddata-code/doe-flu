@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แบบสอบสวนโรคไข้หวัดใหญ่ในกองระบาดวิทยา</title>
+<style>body{font-family:system-ui,sans-serif;background:#f4f3f0;color:#52514e;text-align:center;padding:60px 20px}button{font:inherit;padding:8px 18px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer}</style>
+</head>
+<body>
+<p id="msg">กำลังโหลดแบบสอบสวน…</p>
+<script>
+var API_URL = 'https://script.google.com/macros/s/AKfycbyw2qXNRk7Y7heBDUFx3Vidd4rffzwSEaus7yeLBh3EVwe472oPUmwp1r_r_CZZriY7/exec';
+function load() {
+  document.getElementById('msg').textContent = 'กำลังโหลดแบบสอบสวน…';
+  fetch(API_URL + '?action=getPage&t=' + Date.now(), { credentials: 'omit', redirect: 'follow' })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) throw new Error(j.error || 'error');
+      document.open();
+      document.write(j.data.html);
+      document.close();
+    })
+    .catch(function (e) {
+      document.getElementById('msg').innerHTML = 'โหลดแบบสอบสวนไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่<br><br><button onclick="load()">ลองใหม่</button>';
+      console.error(e);
+    });
+}
+load();
+</script>
+</body>
+</html>
